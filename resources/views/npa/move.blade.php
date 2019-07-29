@@ -17,7 +17,7 @@
           <label for="new_section">Переместить в</label>
           <select id="new_section" name="new_section" class="form-control">
             <option selected value="0">------</option>
-            @include('avl.settings.sections.blocks.parent', ['sections' => $structures, 'parent' => 0, 'current' => $id, 'pre' => '' ,'level' => 0])
+            @include('avl.settings.sections.blocks.parent-npa', ['sections' => $structures, 'parent' => 0, 'current' => $id, 'pre' => '' ,'level' => 0])
           </select>
         </div>
 

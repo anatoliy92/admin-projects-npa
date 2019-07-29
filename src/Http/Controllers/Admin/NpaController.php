@@ -131,11 +131,11 @@ class NpaController extends AvlController
         }
 
         if (isset($post['npa_comment_until'])) {
-            $record->updated_date = $post['npa_comment_until_date'] . ' ' . $post['npa_comment_until_time'];
+            $record->comment_until_date = $post['npa_comment_until_date'] . ' ' . $post['npa_comment_until_time'];
         }
 
         if (isset($post['npa_until'])) {
-            $record->updated_date = $post['npa_until_date'] . ' ' . $post['npa_until_time'];
+            $record->until_date = $post['npa_until_date'] . ' ' . $post['npa_until_time'];
         }
 
         if (isset($post['npa_rubric_id']) && ($post['npa_rubric_id'] > 0)) {
@@ -261,6 +261,18 @@ class NpaController extends AvlController
             $npa->updated_date = $post['npa_updated_date'] . ' ' . $post['npa_updated_time'];
         } else {
             $npa->updated_date = null;
+        }
+
+        if (isset($post['npa_comment_until'])) {
+            $npa->comment_until_date = $post['npa_comment_until_date'] . ' ' . $post['npa_comment_until_time'];
+        } else {
+            $npa->comment_until_date = null;
+        }
+
+        if (isset($post['npa_until'])) {
+            $npa->until_date = $post['npa_until_date'] . ' ' . $post['npa_until_time'];
+        } else {
+            $npa->until_date = null;
         }
 
         if (isset($post['npa_rubric_id']) && ($post['npa_rubric_id'] > 0)) {
