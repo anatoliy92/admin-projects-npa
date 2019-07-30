@@ -111,11 +111,11 @@ $(document).ready(function() {
 			$('.until--date').attr({'disabled': true});
 		}
 	});
-	$("body").on('click', '.change--comment-until-date', function (e) {
+	$("body").on('click', '.change--commented-until-date', function (e) {
 		if ($(this).is(':checked')) {
-			$('.comment-until--date').attr({'disabled': false});
+			$('.commented-until--date').attr({'disabled': false});
 		} else {
-			$('.comment-until--date').attr({'disabled': true});
+			$('.commented-until--date').attr({'disabled': true});
 		}
 	});
 

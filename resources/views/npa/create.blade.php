@@ -88,9 +88,9 @@
 							<div class="controls">
 								<div class="input-prepend input-group">
 									<div class="input-group-prepend">
-										<span class="input-group-text">{{ Form::checkbox('npa_comment_until', 'on', false, ['class' => 'change--comment-until-date']) }}</span>
+										<span class="input-group-text">{{ Form::checkbox('npa_commented_until', 'on', false, ['class' => 'change--commented-until-date']) }}</span>
 									</div>
-									{{ Form::text('npa_until_date', null, ['class' => 'form-control datepicker comment-until--date', 'disabled' => true ]) }}
+									{{ Form::text('npa_until_date', null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => true ]) }}
 								</div>
 							</div>
 						</div>
@@ -98,7 +98,7 @@
 					<div class="col-12 col-sm-3">
 						<div class="form-group">
 							{{ Form::label(null, 'Время окончания приема комментариев') }}
-							{{ Form::text('npa_comment_until_time', null, ['class' => 'form-control timepicker comment-until--date', 'disabled' => true]) }}
+							{{ Form::text('npa_commented_until_time', null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => true]) }}
 						</div>
 					</div>
 

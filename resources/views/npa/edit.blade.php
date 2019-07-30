@@ -81,9 +81,9 @@
 								<div class="controls">
 									<div class="input-prepend input-group">
 										<div class="input-group-prepend">
-											<span class="input-group-text">{{ Form::checkbox('npa_comment_until', 'on', ($npa->comment_until_date) ? true : false, ['class' => 'change--comment-until-date']) }}</span>
+											<span class="input-group-text">{{ Form::checkbox('npa_commented_until', 'on', ($npa->commented_until_date) ? true : false, ['class' => 'change--commented-until-date']) }}</span>
 										</div>
-										{{ Form::text('npa_comment_until_date', $npa->comment_until_date ? date('Y-m-d', strtotime($npa->comment_until_date)) : null, ['class' => 'form-control datepicker comment-until--date', 'disabled' => !$npa->comment_until_date ? true : false]) }}
+										{{ Form::text('npa_commented_until_date', $npa->commented_until_date ? date('Y-m-d', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
 									</div>
 								</div>
 							</div>
@@ -91,7 +91,7 @@
 						<div class="col-12 col-sm-3">
 							<div class="form-group">
 								{{ Form::label(null, 'Время окончания приема комментариев') }}
-								{{ Form::text('npa_comment_until_time', $npa->comment_until_date ? date('H:i', strtotime($npa->comment_until_date)) : null, ['class' => 'form-control timepicker comment-until--date', 'disabled' => !$npa->comment_until_date ? true : false]) }}
+								{{ Form::text('npa_commented_untiled_time', $npa->commented_until_date ? date('H:i', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
 							</div>
 						</div>
 

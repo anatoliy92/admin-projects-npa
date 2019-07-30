@@ -109,8 +109,8 @@ class NpaController extends AvlController
                 'npa_updated_time'       => 'date_format:"H:i"',
                 'npa_until_date'         => 'date_format:"Y-m-d"',
                 'npa_until_time'         => 'date_format:"H:i"',
-                'npa_comment_until_date' => 'date_format:"Y-m-d',
-                'npa_comment_until_time' => 'date_format:"H:i',
+                'npa_commented_until_date' => 'date_format:"Y-m-d',
+                'npa_commented_until_time' => 'date_format:"H:i',
                 'npa_updated'            => ''
             ]);
 
@@ -130,8 +130,8 @@ class NpaController extends AvlController
             $record->updated_date = $post['npa_updated_date'] . ' ' . $post['npa_updated_time'];
         }
 
-        if (isset($post['npa_comment_until'])) {
-            $record->comment_until_date = $post['npa_comment_until_date'] . ' ' . $post['npa_comment_until_time'];
+        if (isset($post['npa_commented_until'])) {
+            $record->commented_until_date = $post['npa_commented_until_date'] . ' ' . $post['npa_commented_until_time'];
         }
 
         if (isset($post['npa_until'])) {
@@ -263,10 +263,10 @@ class NpaController extends AvlController
             $npa->updated_date = null;
         }
 
-        if (isset($post['npa_comment_until'])) {
-            $npa->comment_until_date = $post['npa_comment_until_date'] . ' ' . $post['npa_comment_until_time'];
+        if (isset($post['npa_commented_until'])) {
+            $npa->commented_until_date = $post['npa_commented_until_date'] . ' ' . $post['npa_commented_until_time'];
         } else {
-            $npa->comment_until_date = null;
+            $npa->commented_until_date = null;
         }
 
         if (isset($post['npa_until'])) {
