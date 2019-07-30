@@ -91,7 +91,7 @@
 						<div class="col-12 col-sm-3">
 							<div class="form-group">
 								{{ Form::label(null, 'Время окончания приема комментариев') }}
-								{{ Form::text('npa_commented_untiled_time', $npa->commented_until_date ? date('H:i', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
+								{{ Form::text('npa_commented_until_time', $npa->commented_until_date ? date('H:i', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
 							</div>
 						</div>
 

@@ -1,10 +1,12 @@
 <?php namespace Avl\AdminNpa\Controllers\Site;
 
+use App\Facades\ApiFacade;
 use App\Http\Controllers\Site\Sections\SectionsController;
 use Illuminate\Http\Request;
 use App\Models\Sections;
 use Carbon\Carbon;
 use Cache;
+use Illuminate\Support\Facades\Auth;
 use View;
 
 class NpaController extends SectionsController
@@ -105,6 +107,37 @@ class NpaController extends SectionsController
                 'pagination' => $records->appends($_GET)->links(),
                 'request'    => $request
             ]);
+    }
+
+    /**
+     * Добавление комментария
+     *
+     * @param integer $id номер записи
+     * @param Request $request
+     * @return json
+     */
+    public function sendComment($id, Request $request)
+    {
+        $post = $request->input();
+
+        $this->validate(
+            request(),
+            [
+                'comment' => 'required',
+            ]);
+
+        $response = ApiFacade::request('POST', 'api/npa/' . $id . '/comment', [
+            'created_id' => Auth::user()->id,
+            'lang'       => $this->lang,
+            'comment'    => $post['comment'],
+            'comment_id' => $post['comment_id'] ?? null
+        ]);
+
+        if (isset($response->errors)) {
+            return redirect()->back()->withErrors($response->errors);
+        }
+
+        return redirect()->back()->with("Комментарий добавлен");
     }
 
     public function getQuery($result, $request)

@@ -31,11 +31,12 @@ Route::group(
 
 
 Route::group(
-    ['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localizationRedirect']],
+    ['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['localizationRedirect', 'web']],
     function () {
         Route::group(
             ['namespace' => 'Avl\AdminNpa\Controllers\Site'],
             function () {
+                Route::post('/npa/{id}/comment', 'NpaController@sendComment')->name('site.npa.comment.send');
                 Route::get('npa/{alias}/', 'NpaController@index')->name('site.npa.index');
                 Route::get('npa/{alias}/{id}', 'NpaController@show')->name('site.npa.show')->where('id', '[0-9]+');
                 Route::get('npa/{alias}/rubrics', 'NpaController@rubrics')->name('site.npa.rubrics');
