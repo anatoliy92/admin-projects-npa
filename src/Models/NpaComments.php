@@ -57,4 +57,20 @@ class NpaComments extends Model
             }
         }
     }
+
+    static function getList($comments)
+    {
+        $list = [];
+
+        foreach ($comments as $comment) {
+            if (is_null($comment->comment_id)) {
+                $list[$comment->id]['comment'] = $comment;
+                $list[$comment->id]['replies'] = [];
+            } else {
+                $list[$comment->comment_id]['replies'][$comment->id]['comment'] = $comment;
+            }
+        }
+
+        return $list;
+    }
 }

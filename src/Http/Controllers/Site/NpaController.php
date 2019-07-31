@@ -137,7 +137,7 @@ class NpaController extends SectionsController
             return redirect()->back()->withErrors($response->errors);
         }
 
-        return redirect()->back()->with("Комментарий добавлен");
+        return redirect()->back()->with("status", "Комментарий проходит модерацию");
     }
 
     public function getQuery($result, $request)

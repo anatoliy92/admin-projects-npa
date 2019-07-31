@@ -43,6 +43,7 @@
 								@endforeach
 								<th class="text-center">Наименование документа</th>
 								@if ($section->rubric == 1)<th class="text-center" style="width: 160px;">Рубрика</th>@endif
+								<th>Комментарии (На сайте / Ожидают модерации)</th>
 								<th class="text-center" style="width: 160px">Дата публикации</th>
 								<th class="text-center" style="width: 100px;">Действие</th>
 							</tr>
@@ -62,6 +63,7 @@
 									@if ($section->rubric == 1)
 										<td class="text-center">@if(!is_null($new->rubric))@if(!is_null($new->rubric->title_ru)){{ $new->rubric->title_ru }}@else{{ str_limit(strip_tags($new->rubric->description_ru), 70) }}@endif @endif</td>
 									@endif
+									<td><a href="{{ route('adminnpa::sections.npa.comment.index', ['id' => $new->id]) }}"> {{ $new->comments()->where('moderated', 1)->count() }} / {{ $new->comments()->where('moderated', 0)->count() }}</a></td>
 									<td class="text-center change--datetime">
 										<span>{{ date('Y-m-d H:i', strtotime($new->published_at)) }}</span>
 										<input type="text" class="datetimepicker form-control" data-id="{{ $new->id }}" value="{{ date('Y-m-d H:i', strtotime($new->published_at)) }}">
