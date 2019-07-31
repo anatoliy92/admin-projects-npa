@@ -77,11 +77,12 @@ class CommentsController extends AvlController
     {
         $comment = NpaComments::findOrFail($commentId);
 
-        if ($comment->remove()) {
-            return redirect()->route('adminnpa::sections.npa.comment.index', ['id' => $id]);
+        if ($comment->delete()) {
+
+            return ['success' => ['Комментарий удален']];
         }
 
-        return redirect()->back()->with(['errors' => ['Произошла ошибка']]);
+        return ['errors' => ['Ошибка удаления.']];
     }
     /**
      * Ответить на комментарий

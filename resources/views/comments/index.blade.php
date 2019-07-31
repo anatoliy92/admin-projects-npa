@@ -1,9 +1,6 @@
 @extends('avl.default')
 
 @section('js')
-	<script src="/avl/js/dateformat.js" charset="utf-8"></script>
-	<link rel="stylesheet" href="{{ asset('vendor/adminnpa/js/datetimepicker/jquery.datetimepicker.min.css') }}">
-	<script src="{{ asset('vendor/adminnpa/js/datetimepicker/jquery.datetimepicker.full.min.js') }}" charset="utf-8"></script>
 	<script src="{{ asset('vendor/adminnpa/js/comment.js') }}" charset="utf-8"></script>
 @endsection
 
@@ -50,7 +47,7 @@
 											</div>
 										@endif
 									</td>
-									<td class="text-center change--datetime">
+									<td class="text-center">
 										<span>{{ date('Y-m-d H:i', strtotime($comment->created_at)) }}</span>
 									</td>
 									<td class="text-right">
@@ -67,7 +64,7 @@
 													<span>Вы действительно желаете удалить запись?</span>
 													<span class="remove--actions btn-group btn-group-sm">
 															<button class="btn btn-outline-primary cancel"><i class="fa fa-times-circle"></i> Нет</button>
-															<button class="btn btn-outline-danger remove--comment" data-id="{{ $comment->id }}" data-section="{{ $npa->id }}"><i class="fa fa-trash"></i> Да</button>
+															<button class="btn btn-outline-danger remove--comment" data-id="{{ $comment->id }}" data-npa="{{ $npa->id }}"><i class="fa fa-trash"></i> Да</button>
 													</span>
 											</div>
 
