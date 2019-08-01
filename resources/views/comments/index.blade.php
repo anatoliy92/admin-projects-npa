@@ -2,6 +2,7 @@
 
 @section('js')
 	<script src="{{ asset('vendor/adminnpa/js/comment.js') }}" charset="utf-8"></script>
+	<script src="/avl/js/tinymce/tinymce.min.js" charset="utf-8"></script>
 @endsection
 
 @section('main')
@@ -16,9 +17,7 @@
 						<thead>
 							<tr>
 								<th width="50" class="text-center">#</th>
-								@foreach ($langs as $lang)
-									<th class="text-center" style="width: 20px">{{ $lang->key }}</th>
-								@endforeach
+								<th class="text-center">Язык комментария</th>
 								<th>Автор</th>
 								<th class="text-center">Комментарий</th>
 								<th class="text-center" style="width: 160px">Дата публикации</th>
@@ -26,22 +25,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach ($comments as $comment)
+							@foreach (\Avl\AdminNpa\Models\NpaComments::getList($comments) as $data)
+								@php $comment = $data['comment']; @endphp
 								<tr class="position-relative" id="comment--item-{{ $comment->id }}">
 									<td class="text-center">{{ $comment->id }}</td>
-									@foreach($langs as $lang)
-										<td class="text-center">
-											<i class="fa @if ($comment->{'comment_' . $lang->key}){{ 'fa-eye' }}@else{{ 'fa-eye-slash' }}@endif"></i>
-										</td>
-									@endforeach
+									<td class="text-center">
+										{{ $comment->getCommentLang(false)->name }}
+									</td>
 									<td><b>{{ $comment->author->getFioAttribute() }}</b><br/></td>
-									<td>{{ $comment->getComment() }}<br/>
+									<td>{{ $comment->getComment() }}<br/><br/>
+										@if (!empty($data['replies']))
+											@foreach ($data['replies'] as $reply)
+												<b>{{ $comment->author->getFioAttribute() }}</b>: {{ $reply['comment']->getComment() }}
+											@endforeach
+										@endif
 
-										@if ($npa->created_user == $user->id)
+										@if ($npa->created_user == $user->id AND empty($data['replies']))
 											<div class="comment-reply">
 												<form class="form-group" method="post" action="{{ route('adminnpa::sections.npa.comment.reply', ['id' => $npa->id, 'comment_id' => $comment->id]) }}">
 													{!! csrf_field(); !!}
-													<textarea class="form-control" name="comment"></textarea>
+													<textarea class="tinymce" name="comment"></textarea>
 													<button class="btn btn-outline-primary" type="submit">Ответить</button>
 												</form>
 											</div>
@@ -53,7 +56,7 @@
 									<td class="text-right">
 										<div class="btn-group" role="group">
 											@if ($comment->moderated)
-												<span class="btn btn-outline-green disabled"> <i class="fa fa-eye"></i></span>
+												<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id, 'hide' => 1]) }}" class="btn btn btn-outline-primary" title="Скрыть с сайта"><i class="fa fa-eye-slash"></i></a>
 											@else
 												<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id]) }}" class="btn btn btn-outline-primary" title="Показать на сайте"><i class="fa fa-eye"></i></a>
 											@endif

@@ -49,11 +49,11 @@ class NpaComments extends Model
         }
     }
 
-    public function getCommentLang()
+    public function getCommentLang($onlyKey = true)
     {
         foreach (Langs::all() as $lang) {
             if ($this->{'comment_' . $lang->key}) {
-                return $lang->key;
+                return $onlyKey ? $lang->key : $lang;
             }
         }
     }

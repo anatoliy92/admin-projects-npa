@@ -47,7 +47,8 @@ class NpaController extends SectionsController
         $template = 'site.templates.npa.full.' . $this->getTemplateFileName(
                 $this->section->current_template->file_full);
 
-        $data = $this->section->npa()->where('good_' . $this->lang, 1)->findOrFail($id);
+        $data = $this->section->npa()->where('good_' . $this->lang, 1)
+            ->where('until_date', '>=', Carbon::now())->findOrFail($id);
 
         $data->timestamps = false;  // отключаем обновление даты
 
@@ -157,6 +158,8 @@ class NpaController extends SectionsController
         if ($request->input('date')) {
             $result = $result->whereDate('published_at', $request->input('date'));
         }
+
+        $result = $result->where('until_date', '>=', Carbon::now());
 
         $result = $result->with('rubric');
         $result = $result->where('published_at', '<=', Carbon::now());

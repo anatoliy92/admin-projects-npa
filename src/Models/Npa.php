@@ -1,5 +1,6 @@
 <?php namespace Avl\AdminNpa\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
 use LaravelLocalization;
@@ -87,6 +88,11 @@ class Npa extends Model
 
     public function isCommentable()
     {
-        return $this->commented_until_date < new \DateTime();
+        return $this->commented_until_date < Carbon::now();
+    }
+
+    public function isOld()
+    {
+        return $this->until_date < Carbon::now();
     }
 }

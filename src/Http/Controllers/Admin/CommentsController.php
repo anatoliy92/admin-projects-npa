@@ -57,7 +57,7 @@ class CommentsController extends AvlController
     {
         $comment = NpaComments::findOrFail($commentId);
 
-        $comment->moderated = true;
+        $comment->moderated = $request->get('hide', false) ? false : true;
 
         if ($comment->save()) {
             return redirect()->route('adminnpa::sections.npa.comment.index', ['id' => $id]);
