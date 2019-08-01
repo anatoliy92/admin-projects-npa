@@ -1,9 +1,6 @@
 @extends('avl.default')
 
 @section('js')
-	<script src="/avl/js/dateformat.js" charset="utf-8"></script>
-	<link rel="stylesheet" href="{{ asset('vendor/adminnpa/js/datetimepicker/jquery.datetimepicker.min.css') }}">
-	<script src="{{ asset('vendor/adminnpa/js/datetimepicker/jquery.datetimepicker.full.min.js') }}" charset="utf-8"></script>
 	<script src="{{ asset('vendor/adminnpa/js/index.js') }}" charset="utf-8"></script>
 @endsection
 
@@ -64,9 +61,8 @@
 										<td class="text-center">@if(!is_null($new->rubric))@if(!is_null($new->rubric->title_ru)){{ $new->rubric->title_ru }}@else{{ str_limit(strip_tags($new->rubric->description_ru), 70) }}@endif @endif</td>
 									@endif
 									<td><a href="{{ route('adminnpa::sections.npa.comment.index', ['id' => $new->id]) }}"> {{ $new->comments()->where('moderated', 1)->count() }} / {{ $new->comments()->where('moderated', 0)->count() }}</a></td>
-									<td class="text-center change--datetime">
-										<span>{{ date('Y-m-d H:i', strtotime($new->published_at)) }}</span>
-										<input type="text" class="datetimepicker form-control" data-id="{{ $new->id }}" value="{{ date('Y-m-d H:i', strtotime($new->published_at)) }}">
+									<td class="text-center">
+										{{ date('Y-m-d H:i', strtotime($new->published_at)) }}
 									</td>
 									<td class="text-right">
 										<div class="btn-group" role="group">

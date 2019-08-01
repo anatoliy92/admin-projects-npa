@@ -4,7 +4,7 @@
 	<script src="/avl/js/jquery-ui/jquery-ui.min.js" charset="utf-8"></script>
 	<script src="/avl/js/uploadifive/jquery.uploadifive.min.js" charset="utf-8"></script>
 
-	<script src="/avl/js/modules/settings/npa/edit.js" charset="utf-8"></script>
+	<script src="{{ asset('vendor/adminnpa/js/edit.js') }}" charset="utf-8"></script>
 	<script src="/avl/js/tinymce/tinymce.min.js" charset="utf-8"></script>
 
 	<script src="/avl/js/jquery-ui/timepicker/jquery.ui.timepicker.js" charset="utf-8"></script>
