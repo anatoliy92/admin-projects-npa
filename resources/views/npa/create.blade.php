@@ -90,7 +90,7 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text">{{ Form::checkbox('npa_commented_until', 'on', false, ['class' => 'change--commented-until-date']) }}</span>
 									</div>
-									{{ Form::text('npa_until_date', null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => true ]) }}
+									{{ Form::text('npa_commented_until_date', null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => true ]) }}
 								</div>
 							</div>
 						</div>
