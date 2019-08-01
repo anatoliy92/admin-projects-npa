@@ -67,7 +67,9 @@ class NpaComments extends Model
                 $list[$comment->id]['comment'] = $comment;
                 $list[$comment->id]['replies'] = [];
             } else {
-                $list[$comment->comment_id]['replies'][$comment->id]['comment'] = $comment;
+                if (isset($list[$comment->comment_id])) {
+                    $list[$comment->comment_id]['replies'][$comment->id]['comment'] = $comment;
+                }
             }
         }
 
