@@ -88,7 +88,7 @@ class Npa extends Model
 
     public function isCommentable()
     {
-        return $this->commented_until_date < Carbon::now();
+        return $this->commented_until_date > Carbon::now();
     }
 
     public function isOld()
