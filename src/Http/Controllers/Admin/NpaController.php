@@ -103,6 +103,7 @@ class NpaController extends AvlController
                 'npa_short_ru'           => '',
                 'npa_full_ru'            => '',
                 'npa_title_ru'           => 'max:255',
+                'npa_type'               => '',
                 'npa_published_at'       => 'required|date_format:"Y-m-d"',
                 'npa_published_time'     => 'required|date_format:"H:i"',
                 'npa_updated_date'       => 'date_format:"Y-m-d"',
@@ -118,6 +119,7 @@ class NpaController extends AvlController
         $record->section_id   = $id;
         $record->created_user = Auth::user()->id;
         $record->published_at = $post['npa_published_at'] . ' ' . $post['npa_published_time'];
+        $record->type         = $post['npa_type'];
 
         foreach ($this->langs as $lang) {
             $record->{'good_' . $lang->key}  = $post['npa_good_' . $lang->key];
@@ -238,6 +240,7 @@ class NpaController extends AvlController
                 'npa_title_ru'       => 'max:255',
                 'npa_short_ru'       => '',
                 'npa_full_ru'        => '',
+                'npa_type'           => '',
                 'npa_published_at'   => 'required|date_format:"Y-m-d"',
                 'npa_published_time' => 'required|date_format:"H:i"',
                 'npa_updated_date'   => 'date_format:"Y-m-d"',
@@ -248,6 +251,7 @@ class NpaController extends AvlController
         $npa = Npa::findOrFail($npa_id);
 
         $npa->published_at = $post['npa_published_at'] . ' ' . $post['npa_published_time'];
+        $npa->type         = $post['npa_type'];
         $npa->update_user  = Auth::user()->id;
 
         foreach ($this->langs as $lang) {

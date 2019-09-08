@@ -75,26 +75,27 @@
 								{{ Form::text('npa_until_time', $npa->until_date ? date('H:i', strtotime($npa->until_date)) : null, ['class' => 'form-control timepicker until--date', 'disabled' => !$npa->until_date ? true : false]) }}
 							</div>
 						</div>
-						<div class="col-12 col-sm-3">
-							<div class="form-group">
-								{{ Form::label(null, 'Дата окончания приема коментариев') }}
-								<div class="controls">
-									<div class="input-prepend input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text">{{ Form::checkbox('npa_commented_until', 'on', ($npa->commented_until_date) ? true : false, ['class' => 'change--commented-until-date']) }}</span>
+						@if ($npa->type == 1)
+							<div class="col-12 col-sm-3">
+								<div class="form-group">
+									{{ Form::label(null, 'Дата окончания приема коментариев') }}
+									<div class="controls">
+										<div class="input-prepend input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">{{ Form::checkbox('npa_commented_until', 'on', ($npa->commented_until_date) ? true : false, ['class' => 'change--commented-until-date']) }}</span>
+											</div>
+											{{ Form::text('npa_commented_until_date', $npa->commented_until_date ? date('Y-m-d', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
 										</div>
-										{{ Form::text('npa_commented_until_date', $npa->commented_until_date ? date('Y-m-d', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control datepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-12 col-sm-3">
-							<div class="form-group">
-								{{ Form::label(null, 'Время окончания приема комментариев') }}
-								{{ Form::text('npa_commented_until_time', $npa->commented_until_date ? date('H:i', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
+							<div class="col-12 col-sm-3">
+								<div class="form-group">
+									{{ Form::label(null, 'Время окончания приема комментариев') }}
+									{{ Form::text('npa_commented_until_time', $npa->commented_until_date ? date('H:i', strtotime($npa->commented_until_date)) : null, ['class' => 'form-control timepicker commented-until--date', 'disabled' => !$npa->commented_until_date ? true : false]) }}
+								</div>
 							</div>
-						</div>
-
+						@endif
 						@if ($section->rubric == 1)
 							<div class="col-12">
 								<div class="form-group">
@@ -110,6 +111,16 @@
 								</div>
 							</div>
 						@endif
+
+							<div class="col-12">
+								<div class="form-group">
+									<label>Тип</label>
+									<select class="form-control" name="npa_type">
+										<option value="1" @if($npa->type != 2){{ 'selected' }}@endif>Проект</option>
+										<option value="2" @if($npa->type == 2){{ 'selected' }}@endif>Действующий</option>
+									</select>
+								</div>
+							</div>
 
 					</div>
 
@@ -224,14 +235,29 @@
 																	<span class="input-group-text"><a href="" class="change--lang" data-id="{{ $file['id'] }}"><img src="/avl/img/icons/flags/{{ $file['lang'] ?? 'null' }}--16.png"></a></span>
 																	<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>
 																	<span class="input-group-text"><a href="#" class="change--status" data-model="App\Models\Media" data-id="{{ $file['id'] }}"><i class="fa @if($file['good'] == 1){{ 'fa-eye' }}@else{{ 'fa-eye-slash' }}@endif"></i></a></span>
+																	<span class="input-group-text"><a href="#" class="change-main-file" data-model="App\Models\Media" data-id="{{ $file['id'] }}"><i class="fa @if($file['id'] == $npa->mainFile){{ 'fa-star' }}@else{{ 'fa-star-o' }}@endif"></i></a></span>
 																	<span class="input-group-text"><a href="/file/download/{{ $file['id'] }}" target="_blank"><i class="fa fa-download"></i></a></span>
 																	<span class="input-group-text"><a href="#" class="deleteMedia" data-id="{{ $file['id'] }}"><i class="fa fa-trash-o"></i></a></span>
 																</div>
 																<input type="text" id="title--{{ $file['id'] }}" class="form-control" value="{{ $file['title_' . $file['lang'] ] }}">
-																<div class="input-group-append">
-																	<a href="#" class="input-group-text save--file-name" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
-																</div>
+																{{ Form::text('', $file['published_at'] ? date('Y-m-d', strtotime($file['published_at'])) : null, ['class' => 'form-control datepicker', 'id' => 'file-published-at-' . $file['id']]) }}
+
+																@if ($npa->type != 2)
+																	<div class="input-group-append">
+																		<a href="#" class="input-group-text save--file" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
+																	</div>
+																@endif
 															</div>
+															@if ($npa->type == 2)
+																<div class="input-group">
+
+																<input type="text" id="full-title--{{ $file['id'] }}" class="form-control" value="{{ $file['fullName'] }}" placeholder="Полное название">
+																<input type="text" id="file-reg-number-{{ $file['id'] }}" class="form-control" value="{{ $file['regNumber'] }}" placeholder="Регистрационный номер">
+																	<div class="input-group-append">
+																		<a href="#" class="input-group-text save--file" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
+																	</div>
+																</div>
+															@endif
 														</div>
 													</li>
 											@endforeach

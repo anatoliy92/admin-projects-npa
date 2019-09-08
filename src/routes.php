@@ -16,6 +16,7 @@ Route::group(
                 /* маршруты для работы с медиа */
                 Route::post('npa-images', 'MediaController@npaImages');
                 Route::post('npa-files', 'MediaController@npaFiles');
+                Route::post('saveFile/{id}', 'MediaController@saveFile');
                 /* маршруты для работы с медиа */
             });
 

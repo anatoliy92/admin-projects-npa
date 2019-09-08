@@ -117,6 +117,17 @@
 							</div>
 						</div>
 					@endif
+
+
+					<div class="col-12">
+						<div class="form-group">
+							<label>Тип</label>
+							<select class="form-control" name="npa_type">
+								<option value="1" selected>Проект</option>
+								<option value="2">Действующий</option>
+							</select>
+						</div>
+					</div>
 				</div>
 
 				<ul class="nav nav-tabs" role="tablist">

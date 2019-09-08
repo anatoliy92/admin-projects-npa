@@ -103,6 +103,14 @@ class MediaController extends AvlController
             $media->{'title_' . $request->input('lang')} = $request->Filedata->getClientOriginalName();
             $media->published_at                         = Carbon::now();
 
+            if ($npa->type == 2) {
+                $oldFile = $npa->media('file')->find($npa->mainFile);
+
+                if ($oldFile) {
+                    $media->fullName = $oldFile->fullName;
+                }
+            }
+
             if ($media->save()) {
                 $path = $request->Filedata->store(config('adminnpa.path_to_file'));
 
@@ -110,6 +118,11 @@ class MediaController extends AvlController
                     $media->url = $path;
 
                     if ($media->save()) {
+                        if ($npa->type == 2) {
+                            $npa->mainFile = $media->id;
+                            $npa->save();
+                        }
+
                         return [
                             'success' => true,
                             'file'    => $media->toArray()
@@ -122,6 +135,49 @@ class MediaController extends AvlController
         }
 
         return ['errors' => ['Ошибка загрузки, обратитесь к администратору.']];
+    }
+
+
+
+    /**
+     * Сохранение данных файла
+     * @param  integer  $id      Номер записи
+     * @param  Request $request
+     * @return JSON
+     */
+    public function saveFile ($id, Request $request)
+    {
+        $media = Media::find($id);
+        $npa = Npa::find($media->model_id);
+
+        if (!is_null($media)) {
+
+            $media->{'title_' . ($media->lang ? $media->lang : 'ru')} = $request->input('title');
+            $post = $request->post();
+
+            if (isset($post['published_at'])) {
+                $media->published_at = $post['published_at'];
+            }
+
+            if (isset($post['fullTitle'])) {
+                $media->fullName = $post['fullTitle'];
+            }
+
+            if (isset($post['regNumber'])) {
+                $media->regNumber = $post['regNumber'];
+            }
+
+            if ($request->has('main') && !is_null($media)) {
+                $npa->mainFile = $media->id;
+                $npa->save();
+            }
+
+            if ($media->save()) {
+                return ['success' => ['Сохранено!!!']];
+            }
+        }
+
+        return ['errors' => ['Ошибка, файл не найден.']];
     }
 
 }
