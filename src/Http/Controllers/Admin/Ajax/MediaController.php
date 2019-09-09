@@ -104,7 +104,7 @@ class MediaController extends AvlController
             $media->published_at                         = Carbon::now();
 
             if ($npa->type == 2) {
-                $oldFile = $npa->media('file')->find($npa->mainFile);
+                $oldFile = $npa->media('file')->find($npa->{'mainFile_' . ($media->lang ? $media->lang : 'ru')});
 
                 if ($oldFile) {
                     $media->fullName = $oldFile->fullName;
@@ -119,7 +119,7 @@ class MediaController extends AvlController
 
                     if ($media->save()) {
                         if ($npa->type == 2) {
-                            $npa->mainFile = $media->id;
+                            $npa->{'mainFile_' . ($media->lang ? $media->lang : 'ru')} = $media->id;
                             $npa->save();
                         }
 
@@ -151,9 +151,11 @@ class MediaController extends AvlController
         $npa = Npa::find($media->model_id);
 
         if (!is_null($media)) {
-
-            $media->{'title_' . ($media->lang ? $media->lang : 'ru')} = $request->input('title');
             $post = $request->post();
+
+            if (isset($post['title'])) {
+                $media->{'title_' . ($media->lang ? $media->lang : 'ru')} = $post['title'];
+            }
 
             if (isset($post['published_at'])) {
                 $media->published_at = $post['published_at'];
@@ -168,7 +170,7 @@ class MediaController extends AvlController
             }
 
             if ($request->has('main') && !is_null($media)) {
-                $npa->mainFile = $media->id;
+                $npa->{'mainFile_' . ($media->lang ? $media->lang : 'ru')} = $media->id;
                 $npa->save();
             }
 
