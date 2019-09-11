@@ -33,11 +33,6 @@ class Npa extends Model
         return $this->hasMany('Avl\AdminNpa\Models\NpaComments', 'npa_id', 'id');
     }
 
-    public function rubric()
-    {
-        return $this->belongsTo('App\Models\Rubrics', 'rubric_id', 'id');
-    }
-
     public function media($type = 'image')
     {
         return Media::whereModel('Avl\AdminNpa\Models\Npa')->where('model_id', $this->id)->where('type', $type);
@@ -47,6 +42,16 @@ class Npa extends Model
     {
         return Media::whereModel('Avl\AdminNpa\Models\Npa')->where('model_id', $this->id)->where('type', 'file');
     }
+
+		public function mainFile ()
+		{
+			return $this->files()->whereId($this->{'mainFile_' . $this->lang})->first();
+		}
+
+		public function npaFiles ()
+		{
+				return $this->files()->where('id', '!=', $this->{'mainFile_' . $this->lang})->orderBy('sind', 'DESC')->get();
+		}
 
     public function getUpdatedAtAttribute($value)
     {

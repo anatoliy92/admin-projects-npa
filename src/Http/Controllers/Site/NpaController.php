@@ -1,53 +1,35 @@
 <?php namespace Avl\AdminNpa\Controllers\Site;
 
-use App\Facades\ApiFacade;
 use App\Http\Controllers\Site\Sections\SectionsController;
-use Illuminate\Http\Request;
-use App\Models\Sections;
-use Carbon\Carbon;
-use Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Facades\ApiFacade;
+use Carbon\Carbon;
 use View;
 
 class NpaController extends SectionsController
 {
 
-    public function index($type, Request $request)
+    public function index(Request $request)
     {
-        if ((is_null($this->section->rubric) || $this->section->rubric == 0) || $this->section->alias == 'npa') {
+        if (is_null($this->section->rubric) || $this->section->rubric == 0) {
 
-            $template = 'site.templates.npa.short.' . $this->getTemplateFileName(
-                    $this->section->current_template->file_short);
+            $template = 'site.templates.npa.short.' . $this->getTemplateFileName($this->section->current_template->file_short);
 
             $records = $this->getQuery($this->section->npa(), $request);
 
-            switch ($type) {
-                case "project":
-                    $records->where('type', 1);
-                    break;
-                case "approve":
-                    $records->where('type', 2);
-                    break;
-                default:
-                    $records->where('type', 1);
-            }
-
             $records = $records->orderBy('published_at', 'DESC')->paginate($this->section->current_template->records);
 
-            $rubrics = $this->section->rubrics()->where('good_' . $this->lang, 1)->orderBy(
-                'title_' . $this->lang,
-                'ASC')->get();
+            $rubrics = $this->section->rubrics()->where('good_' . $this->lang, 1)->orderBy('title_' . $this->lang, 'ASC')->get();
 
             $template = (View::exists($template)) ? $template : 'site.templates.npa.short.default';
 
-            return view(
-                $template,
-                [
-                    'records'    => $records,
-                    'rubrics'    => toSelectTransform($rubrics->toArray()),
-                    'pagination' => $records->appends($_GET)->links(),
-                    'request'    => $request
-                ]);
+            return view ($template, [
+                'records'    => $records,
+                'rubrics'    => toSelectTransform($rubrics->toArray()),
+                'pagination' => $records->appends($_GET)->links(),
+                'request'    => $request
+            ]);
         }
 
         return redirect()->route('site.npa.rubrics', ['alias' => $this->section->alias]);
@@ -73,51 +55,6 @@ class NpaController extends SectionsController
                     'DESC')->get(),
                 'comments' => $data->comments()->where('moderated', 1)->whereNotNull('comment_' . $this->lang)->get(),
                 'print'    => true
-            ]);
-    }
-
-    /**
-     * View all rubrics if instance on
-     *
-     * @param string $alias alias off section
-     * @return to view all rubrics
-     */
-    public function rubrics($alias, Request $request)
-    {
-        $records = $this->section->rubrics()->where('good_' . $this->lang, 1)->orderBy('published_at', 'DESC');
-
-        $template = 'site.templates.npa.category.' . $this->getTemplateFileName(
-                $this->section->current_template->file_category);
-
-        $records = $records->paginate($this->section->current_template->records);
-
-        return view(
-            $template,
-            [
-                'records'    => $records,
-                'pagination' => $records->appends($_GET)->links(),
-                'byPage'     => $this->section->current_template->records
-            ]);
-    }
-
-    public function rubricsShow($alias, $rubric = null, Request $request)
-    {
-        $template = 'site.templates.npa.short.' . $this->getTemplateFileName(
-                $this->section->current_template->file_short);
-
-        $records = $this->getQuery($this->section->npa(), $request);
-
-        $records = $records->where('rubric_id', $rubric)->orderBy('published_at', 'DESC')->paginate(
-            $this->section->current_template->records);
-
-        return view(
-            $template,
-            [
-                'records'    => $records,
-                'rubrics'    => $this->section->rubrics()->orderBy('published_at', 'desc')->get(),
-                'rubricOne'  => $this->section->rubrics()->find($rubric),
-                'pagination' => $records->appends($_GET)->links(),
-                'request'    => $request
             ]);
     }
 
@@ -157,22 +94,17 @@ class NpaController extends SectionsController
 
         $result = $result->where('good_' . $this->lang, 1);
 
-        // фильтр если приходит
-        if ($request->input('rubric') && $request->input('rubric') > 0) {
-            $result = $result->where('rubric_id', $request->input('rubric'))->whereHas(
-                'rubric',
-                function ($query) {
-                    $query->where('good_' . $this->lang, 1);
-                });
-        }
-
         if ($request->input('date')) {
             $result = $result->whereDate('published_at', $request->input('date'));
         }
 
+        switch ($request->type) {
+          case "approve": { $result = $result->where('type', 2); break; }
+          default: { $result = $result->where('type', 1); break; }
+        }
+
         $result = $result->where('until_date', '>=', Carbon::now());
 
-        $result = $result->with('rubric');
         $result = $result->where('published_at', '<=', Carbon::now());
 
         return $result;
