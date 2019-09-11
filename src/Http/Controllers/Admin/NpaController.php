@@ -52,7 +52,7 @@ class NpaController extends AvlController
                 'section' => $section,
                 'request' => $request,
                 'langs'   => $this->langs,
-                'npa'     => $this->getQuery($section->npa(), $request, $type)->paginate(30),
+                'npa'     => $this->getQuery($section->npa(), $request)->paginate(30),
                 'rubrics' => array_add(
                     toSelectTransform(
                         Rubrics::select('id', 'title_ru')->where('section_id', $section->id)->get()->toArray()),
