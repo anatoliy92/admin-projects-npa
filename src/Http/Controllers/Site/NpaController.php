@@ -12,7 +12,7 @@ use View;
 class NpaController extends SectionsController
 {
 
-    public function index(Request $request)
+    public function index($type, Request $request)
     {
         if ((is_null($this->section->rubric) || $this->section->rubric == 0) || $this->section->alias == 'npa') {
 
@@ -20,6 +20,17 @@ class NpaController extends SectionsController
                     $this->section->current_template->file_short);
 
             $records = $this->getQuery($this->section->npa(), $request);
+
+            switch ($type) {
+                case "project":
+                    $records->where('type', 1);
+                    break;
+                case "approve":
+                    $records->where('type', 2);
+                    break;
+                default:
+                    $records->where('type', 1);
+            }
 
             $records = $records->orderBy('published_at', 'DESC')->paginate($this->section->current_template->records);
 

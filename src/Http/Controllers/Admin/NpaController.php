@@ -36,7 +36,7 @@ class NpaController extends AvlController
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index($id, $type, Request $request)
+    public function index($id, Request $request)
     {
         // Запоминаем номер страницы на которой находимся
         $request->session()->put('page', $request->input('page') ?? 1);
@@ -398,7 +398,7 @@ class NpaController extends AvlController
      * @param  string $type
      * @return query
      */
-    private function getQuery($query, $request, $type)
+    private function getQuery($query, $request)
     {
         if (!is_null($request->input('rubric'))) {
             if ($request->input('rubric') == 0) {
@@ -406,17 +406,6 @@ class NpaController extends AvlController
             } else {
                 $query = $query->where('rubric_id', $request->input('rubric'));
             }
-        }
-
-        switch ($type) {
-            case "project":
-                $query->where('type', 1);
-                break;
-            case "approve":
-                $query->where('type', 2);
-                break;
-            default:
-                $query->where('type', 1);
         }
 
         return $query->orderBy('published_at', 'DESC');
