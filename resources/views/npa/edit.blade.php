@@ -241,6 +241,7 @@
 																</div>
 																<input type="text" id="title--{{ $file['id'] }}" class="form-control" value="{{ $file['title_' . $file['lang'] ] }}">
 																{{ Form::text('', $file['published_at'] ? date('Y-m-d', strtotime($file['published_at'])) : null, ['class' => 'form-control datepicker', 'id' => 'file-published-at-' . $file['id']]) }}
+																{{ Form::text('', $file['published_at'] ? date('H:i', strtotime($file['published_at'])) : null, ['class' => 'form-control timepicker', 'id' => 'file-published-time-at-' . $file['id']]) }}
 
 																@if ($npa->type != 2)
 																	<div class="input-group-append">

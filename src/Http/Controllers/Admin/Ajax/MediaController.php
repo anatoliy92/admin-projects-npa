@@ -158,7 +158,7 @@ class MediaController extends AvlController
             }
 
             if (isset($post['published_at'])) {
-                $media->published_at = $post['published_at'];
+                $media->published_at = $post['published_at'] . ' ' . $post['published_time_at'];
             }
 
             if (isset($post['fullTitle'])) {
