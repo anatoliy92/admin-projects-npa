@@ -39,6 +39,7 @@ Route::group(
             function () {
                 Route::post('/npa/{id}/comment', 'NpaController@sendComment')->name('site.npa.comment.send');
                 Route::get('npa/{alias}/', 'NpaController@index')->name('site.npa.index');
+                Route::get('npa/{alias}/{type}', 'NpaController@index')->name('site.npa.index')->where('type', '(project|approve)');
                 Route::get('npa/{alias}/{id}', 'NpaController@show')->name('site.npa.show')->where('id', '[0-9]+');
                 Route::get('npa/{alias}/rubrics', 'NpaController@rubrics')->name('site.npa.rubrics');
                 Route::get('npa/{alias}/rubrics/{rubric}', 'NpaController@rubricsShow')->name(

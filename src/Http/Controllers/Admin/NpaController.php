@@ -32,10 +32,11 @@ class NpaController extends AvlController
      * Страница вывода списка документов к определенному разделу
      *
      * @param int     $id номер раздела
+     * @param  string $type
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index($id, Request $request)
+    public function index($id, $type, Request $request)
     {
         // Запоминаем номер страницы на которой находимся
         $request->session()->put('page', $request->input('page') ?? 1);
@@ -51,7 +52,7 @@ class NpaController extends AvlController
                 'section' => $section,
                 'request' => $request,
                 'langs'   => $this->langs,
-                'npa'     => $this->getQuery($section->npa(), $request)->paginate(30),
+                'npa'     => $this->getQuery($section->npa(), $request, $type)->paginate(30),
                 'rubrics' => array_add(
                     toSelectTransform(
                         Rubrics::select('id', 'title_ru')->where('section_id', $section->id)->get()->toArray()),
@@ -394,9 +395,10 @@ class NpaController extends AvlController
      *
      * @param query   $query Eloquent
      * @param request $request
+     * @param  string $type
      * @return query
      */
-    private function getQuery($query, $request)
+    private function getQuery($query, $request, $type)
     {
         if (!is_null($request->input('rubric'))) {
             if ($request->input('rubric') == 0) {
@@ -404,6 +406,17 @@ class NpaController extends AvlController
             } else {
                 $query = $query->where('rubric_id', $request->input('rubric'));
             }
+        }
+
+        switch ($type) {
+            case "project":
+                $query->where('type', 1);
+                break;
+            case "approve":
+                $query->where('type', 2);
+                break;
+            default:
+                $query->where('type', 1);
         }
 
         return $query->orderBy('published_at', 'DESC');
