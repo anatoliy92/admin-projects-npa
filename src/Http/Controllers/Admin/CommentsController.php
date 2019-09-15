@@ -84,6 +84,7 @@ class CommentsController extends AvlController
 
         return ['errors' => ['Ошибка удаления.']];
     }
+
     /**
      * Ответить на комментарий
      *
@@ -115,6 +116,26 @@ class CommentsController extends AvlController
         }
 
         return redirect()->back()->with(['errors' => ['Произошла ошибка']]);
+    }
+
+    /**
+     * Редактировать комментарий
+     *
+     * @param                          $id
+     * @param                          $commentId
+     * @param \Illuminate\Http\Request $request
+     */
+    public function edit($id, $commentId, Request $request)
+    {
+        $comment = NpaComments::findOrFail($commentId);
+
+
+        return view(
+            'adminnpa::comments.edit',
+            [
+                'comment' => $comment,
+                'user'     => Auth::user()
+            ]);
     }
 
 }

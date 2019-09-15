@@ -33,6 +33,11 @@ class NpaComments extends Model
         return $this->belongsTo('App\Models\User', 'created_user', 'id');
     }
 
+    public function reply()
+    {
+        return $this->hasOne('Avl\AdminNpa\Models\NpaComments', 'comment_id', 'id');
+    }
+
     public function getCommentAttribute($value, $lang = null)
     {
         $comment = (!is_null($lang)) ? $lang : $this->lang;
