@@ -41,13 +41,12 @@
 										@endif
 
 										@if ($npa->created_user == $user->id AND empty($data['replies']))
-											<div class="comment-reply">
-												<form class="form-group" method="post" action="{{ route('adminnpa::sections.npa.comment.reply', ['id' => $npa->id, 'comment_id' => $comment->id]) }}">
-													{!! csrf_field(); !!}
-													<textarea class="tinymce" name="comment"></textarea>
-													<button class="btn btn-outline-primary" type="submit">Ответить</button>
-												</form>
-											</div>
+											<a href="{{ route("adminnpa::sections.npa.comment.edit", ['id' => $npa->id, 'comment_id' => $comment->id]) }}">Ответить</a>
+										@endif
+
+
+										@if ($npa->created_user == $user->id AND !empty($data['replies']))
+											<a href="{{ route("adminnpa::sections.npa.comment.edit", ['id' => $npa->id, 'comment_id' => $comment->id]) }}">Редактировать</a>
 										@endif
 									</td>
 									<td class="text-center">
