@@ -22,7 +22,7 @@ Route::group(
 
         Route::get('sections/{id}/npa/move/{npa}', 'NpaController@move')->name('sections.npa.move');
         Route::get('npa/{id}/comment', 'CommentsController@index')->name('sections.npa.comment.index');
-        Route::get('npa/{id}/comment/{comment_id}', 'CommentsController@edit')->name('sections.npa.comment.index');
+        Route::get('npa/{id}/comment/{comment_id}', 'CommentsController@edit')->name('sections.npa.comment.edit');
         Route::get('npa/{id}/comment/show/{comment_id}', 'CommentsController@show')->name('sections.npa.comment.show');
         Route::get('npa/{id}/comment/remove/{comment_id}', 'CommentsController@remove')->name('sections.npa.comment.remove');
         Route::post('npa/{id}/comment/reply/{comment_id}', 'CommentsController@reply')->name('sections.npa.comment.reply');
