@@ -17,6 +17,7 @@
 						<thead>
 							<tr>
 								<th width="50" class="text-center">#</th>
+								<th width="50" class="text-center">Вкл / Выкл</th>
 								<th class="text-center">Язык комментария</th>
 								<th>Автор</th>
 								<th class="text-center">Комментарий</th>
@@ -28,7 +29,14 @@
 							@foreach (\Avl\AdminNpa\Models\NpaComments::getList($comments) as $data)
 								@php $comment = $data['comment']; @endphp
 								<tr class="position-relative" id="comment--item-{{ $comment->id }}">
-									<td class="text-center">{{ $comment->id }}</td>
+									<td class="text-center">{{ $loop->iteration }}</td>
+									<td class="text-center">
+										@if ($comment->moderated)
+											<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id, 'hide' => 1]) }}" class="text-dark" title="Скрыть с сайта"><i class="fa fa-eye"></i></a>
+										@else
+											<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id]) }}" class="text-dark" title="Показать на сайте"><i class="fa fa-eye-slash"></i></a>
+										@endif
+									</td>
 									<td class="text-center">
 										{{ $comment->getCommentLang(false)->name }}
 									</td>
@@ -39,28 +47,22 @@
 												<b>{{ $comment->author->getFioAttribute() }}</b>: {{ $reply['comment']->getComment() }}
 											@endforeach
 										@endif
-
-										@if ($npa->created_user == $user->id AND empty($data['replies']))
+										{{-- @if ($npa->created_user == $user->id AND empty($data['replies']))
 											<a href="{{ route("adminnpa::sections.npa.comment.edit", ['id' => $npa->id, 'comment_id' => $comment->id]) }}">Ответить</a>
 										@endif
 
 
 										@if ($npa->created_user == $user->id AND !empty($data['replies']))
 											<a href="{{ route("adminnpa::sections.npa.comment.edit", ['id' => $npa->id, 'comment_id' => $comment->id]) }}">Редактировать</a>
-										@endif
+										@endif --}}
 									</td>
 									<td class="text-center">
 										<span>{{ date('Y-m-d H:i', strtotime($comment->created_at)) }}</span>
 									</td>
 									<td class="text-right">
 										<div class="btn-group" role="group">
-											@if ($comment->moderated)
-												<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id, 'hide' => 1]) }}" class="btn btn btn-outline-primary" title="Скрыть с сайта"><i class="fa fa-eye-slash"></i></a>
-											@else
-												<a href="{{ route('adminnpa::sections.npa.comment.show', ['id' => $npa->id, 'comment_id' => $comment->id]) }}" class="btn btn btn-outline-primary" title="Показать на сайте"><i class="fa fa-eye"></i></a>
-											@endif
-
-											<a href="#" class="btn btn btn-outline-danger remove--record" title="Удалить"><i class="fa fa-trash"></i></a>
+											<a href="{{ route("adminnpa::sections.npa.comment.edit", ['id' => $npa->id, 'comment_id' => $comment->id]) }}" class="btn btn-outline-success"><i class="fa fa-pencil"></i></a>
+											<a href="#" class="btn btn-outline-danger remove--record" title="Удалить"><i class="fa fa-trash"></i></a>
 										</div>
 											<div class="remove-message">
 													<span>Вы действительно желаете удалить запись?</span>

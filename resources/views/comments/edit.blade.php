@@ -22,9 +22,6 @@
 				<i class="fa fa-align-justify"></i> Ответ:
 			</div>
 			<div class="card-body">
-				<div>
-					<b>{{ $reply->author->getFioAttribute() }}</b>: {{ $reply->getComment() }}
-				</div>
 				@if ($reply->npa->created_user == $user->id)
 					<div class="comment-reply">
 						<form class="form-group" method="post" action="{{ route('adminnpa::sections.npa.comment.reply', ['id' => $reply->npa->id, 'comment_id' => $comment->id]) }}">
