@@ -104,7 +104,12 @@ class CommentsController extends AvlController
                 'comment' => 'required',
             ]);
 
-        $reply                             = new NpaComments();
+        if ($post['replyId']) {
+            $reply = NpaComments::findOrFail($post['replyId']);
+        } else {
+            $reply = new NpaComments();
+        }
+
         $reply->npa_id                     = $comment->npa_id;
         $reply->created_user               = Auth::user()->id;
         $reply->{'comment_' . $comment->getCommentLang()} = $post['comment'];
