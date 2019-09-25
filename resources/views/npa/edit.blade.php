@@ -21,7 +21,7 @@
 					{!! csrf_field(); !!}
 					{{ method_field('PUT') }}
 					<input id="section_id" type="hidden" name="section_id" value="{{ $npa->section_id }}">
-					<input id="model-name" type="hidden" value="Avl\AdminNews\Models\News">
+					<input id="model-name" type="hidden" value="Avl\AdminNpa\Models\Npa">
 					<input id="model-id" type="hidden" name="npa_id" value="{{ $npa->id }}">
 
 					<div class="row">
@@ -225,42 +225,11 @@
 									<input id="upload-files" name="upload" type="file" />
 								</div>
 								<div class="row files--npa">
-									<div class="col-md-12">
+									<div class="col-md-12 block--npa-files">
 										<ul id="sortable-files" class="list-group">
+											@php $type = $npa->type; @endphp
 											@foreach ($files as $file)
-													<li class="col-md-12 list-group-item files--item" id="mediaSortable_{{ $file['id'] }}">
-														<div class="img-thumbnail">
-															<div class="input-group">
-																<div class="input-group-prepend">
-																	<span class="input-group-text"><a href="" class="change--lang" data-lang="{{ $file['lang'] }}" data-id="{{ $file['id'] }}"><img src="/avl/img/icons/flags/{{ $file['lang'] ?? 'null' }}--16.png"></a></span>
-																	<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>
-																	<span class="input-group-text"><a href="#" class="change--status" data-model="App\Models\Media" data-id="{{ $file['id'] }}"><i class="fa @if($file['good'] == 1){{ 'fa-eye' }}@else{{ 'fa-eye-slash' }}@endif"></i></a></span>
-																	<span class="input-group-text"><a href="#" class="change-main-file" data-model="App\Models\Media" data-lang="{{ $file['lang'] }}" data-id="{{ $file['id'] }}"><i class="fa @if($file['id'] == $npa->{'mainFile_' . $file['lang'] ?? 'ru'}){{ 'fa-star' }}@else{{ 'fa-star-o' }}@endif"></i></a></span>
-																	<span class="input-group-text"><a href="/file/download/{{ $file['id'] }}" target="_blank"><i class="fa fa-download"></i></a></span>
-																	<span class="input-group-text"><a href="#" class="deleteMedia" data-id="{{ $file['id'] }}"><i class="fa fa-trash-o"></i></a></span>
-																</div>
-																<input type="text" id="title--{{ $file['id'] }}" class="form-control" value="{{ $file['title_' . $file['lang'] ] }}">
-																{{ Form::text('', $file['published_at'] ? date('Y-m-d', strtotime($file['published_at'])) : null, ['class' => 'form-control datepicker', 'id' => 'file-published-at-' . $file['id']]) }}
-																{{ Form::text('', $file['published_at'] ? date('H:i', strtotime($file['published_at'])) : null, ['class' => 'form-control timepicker', 'id' => 'file-published-time-at-' . $file['id']]) }}
-
-																@if ($npa->type != 2)
-																	<div class="input-group-append">
-																		<a href="#" class="input-group-text save--file" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
-																	</div>
-																@endif
-															</div>
-															@if ($npa->type == 2)
-																<div class="input-group">
-
-																<input type="text" id="full-title--{{ $file['id'] }}" class="form-control" value="{{ $file['fullName'] }}" placeholder="Полное название">
-																<input type="text" id="file-reg-number-{{ $file['id'] }}" class="form-control" value="{{ $file['regNumber'] }}" placeholder="Регистрационный номер">
-																	<div class="input-group-append">
-																		<a href="#" class="input-group-text save--file" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
-																	</div>
-																</div>
-															@endif
-														</div>
-													</li>
+												@include ('adminnpa::npa.snippets.file')
 											@endforeach
 										</ul>
 									</div>

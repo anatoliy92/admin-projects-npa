@@ -63,64 +63,17 @@ $(document).ready(function() {
 				'_token'      : $('meta[name="_token"]').attr('content'),
 				'section_id'  : $('#section_id').val(),
 				'npa_id'	  : $('#model-id').val(),
+				'type'		  : $('#npa_type').val(),
 				'lang'        : $("#select--language-file").val()
 			};
 		},
 		'onUploadComplete' : function( file, data ) {
 			var $data = JSON.parse(data);
-			var $type = $('#npa_type').val();
 			if ($data.success) {
-				let html = '';
+				$('#sortable-files').prepend($data.html);
 
-				if ($type == 1) {
-					html =
-						'<li class="col-md-12 list-group-item files--item" id="mediaSortable_' + $data.file.id + '">'+
-						'<div class="img-thumbnail">'+
-						'<div class="input-group">'+
-						'<div class="input-group-prepend">'+
-						'<span class="input-group-text"><a href="" class="change--lang" data-id="' + $data.file.id + '"><img src="/avl/img/icons/flags/'+ ( $data.file.lang ? $data.file.lang : 'null' ) +'--16.png"></a></span>'+
-						'<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>'+
-						'<span class="input-group-text"><a href="#" class="good" data-model="App\\Models\\Media" data-id="' + $data.file.id + '"><i class="fa fa-eye"></i></a></span>'+
-						'<span class="input-group-text"><a href="#" class="change-main-file" data-model="App\\Models\\Media" data-lang="' + $data.file.lang + '" data-id="' + $data.file.id + '"><i class="fa fa-star-o"></i></a></span>' +
-						'<span class="input-group-text"><a href="/file/download/' + $data.file.id + '" target="_blank"><i class="fa fa-download"></i></a></span>'+
-						'<span class="input-group-text"><a href="#" class="deleteMedia" data-id="' + $data.file.id + '"><i class="fa fa-trash-o"></i></a></span>'+
-						'</div>'+
-						'<input type="text" id="title--' + $data.file.id + '" class="form-control" name="" value="' + $data.file['title_' + $data.file.lang] + '">'+
-						'<input type="text" id="file-published-at-' + $data.file.id + '" class="form-control " value="' + $data.file['published_at'] + '">'+
-						'<div class="input-group-append">'+
-						'<a href="#" class="input-group-text save--file-name" data-id="' + $data.file.id + '"><i class="fa fa-floppy-o"></i></a>'+
-						'</div>'+
-						'</div>'+
-						'</div>'+
-						'</li>';
-				} else {
-					html =
-						'<li class="col-md-12 list-group-item files--item" id="mediaSortable_' + $data.file.id + '">'+
-						'<div class="img-thumbnail">'+
-						'<div class="input-group">'+
-						'<div class="input-group-prepend">'+
-						'<span class="input-group-text"><a href="" class="change--lang" data-id="' + $data.file.id + '"><img src="/avl/img/icons/flags/'+ ( $data.file.lang ? $data.file.lang : 'null' ) +'--16.png"></a></span>'+
-						'<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>'+
-						'<span class="input-group-text"><a href="#" class="good" data-model="App\\Models\\Media" data-id="' + $data.file.id + '"><i class="fa fa-eye"></i></a></span>'+
-						'<span class="input-group-text"><a href="#" class="change-main-file" data-model="App\\Models\\Media" data-lang="' + $data.file.lang + '" data-id="' + $data.file.id + '"><i class="fa fa-star"></i></a></span>' +
-						'<span class="input-group-text"><a href="/file/download/' + $data.file.id + '" target="_blank"><i class="fa fa-download"></i></a></span>'+
-						'<span class="input-group-text"><a href="#" class="deleteMedia" data-id="' + $data.file.id + '"><i class="fa fa-trash-o"></i></a></span>'+
-						'</div>'+
-						'<input type="text" id="title--' + $data.file.id + '" class="form-control" name="" value="' + $data.file['title_' + $data.file.lang] + '">'+
-						'<input type="text" id="file-published-at-' + $data.file.id + '" class="form-control " value="' + $data.file['published_at'] + '">'+
-						'</div>'+
-						'<div class="input-group">'+
-						'<input type="text" id="full-title--' + $data.file.id + '" class="form-control" value="' + ($data.file['fullName'] ? $data.file['fullName'] : '') + '" placeholder="Полное название">' +
-						'<input type="text" id="file-reg-number-' + $data.file.id + '" class="form-control" value="' + ($data.file['regNumber'] ? $data.file['regNumber'] : '') + '" placeholder="Регистрационный номер">'+
-						'<div class="input-group-append">'+
-						'<a href="#" class="input-group-text save--file-name" data-id="' + $data.file.id + '"><i class="fa fa-floppy-o"></i></a>'+
-						'</div>'+
-						'</div>'+
-						'</div>'+
-						'</li>';
-				}
-
-				$('#sortable-files').prepend(html);
+				$('.datepicker').datepicker(globalDatePickerConfig);
+				$('.timepicker').timepicker(globalTimePickerConfig);
 			}
 
 			if ($data.errors) {
@@ -155,19 +108,26 @@ $(document).ready(function() {
 	/* Обновление media */
 	$("body").on('click', '.save--file', function(e) {
 		e.preventDefault();
-		var id         = $(this).attr('data-id');
-		var title      = $("#title--" + id).val();
-		var fullTitle  = $("#full-title--" + id).val();
-		var published_at = $('#file-published-at-' + id).val();
-		var reg_number = $('#file-reg-number-' + id).val();
-		console.log(title);
+		let id = $(this).attr('data-id'),
+			title = $("#title--" + id).val(),
+			fullTitle = $("#full-title--" + id).val(),
+			published_at = $('#file-published-at-' + id).val(),
+			published_time = $('#file-published-time-at-' + id).val(),
+			reg_number = $('#file-reg-number-' + id).val();
 
 		$.ajax({
 			url: '/ajax/saveFile/'+ id,
 			type: 'POST',
 			async: false,
 			dataType: 'json',
-			data : { _token: $('meta[name="_token"]').attr('content'), title: title, published_at: published_at, fullTitle: fullTitle, regNumber: reg_number},
+			data : {
+				_token: $('meta[name="_token"]').attr('content'),
+				title: title,
+				published_time: published_time,
+				published_at: published_at,
+				fullTitle: fullTitle,
+				regNumber: reg_number
+			},
 			success: function(data) {
 				if (data.errors) {
 					messageError(data.errors);

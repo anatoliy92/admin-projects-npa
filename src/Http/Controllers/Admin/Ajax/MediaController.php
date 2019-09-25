@@ -103,7 +103,7 @@ class MediaController extends AvlController
             $media->{'title_' . $request->input('lang')} = $request->Filedata->getClientOriginalName();
             $media->published_at                         = Carbon::now();
 
-            if ($npa->type == 2) {
+            if ($request->input('type') == 2) {
                 $oldFile = $npa->media('file')->find($npa->{'mainFile_' . ($media->lang ? $media->lang : 'ru')});
 
                 if ($oldFile) {
@@ -118,14 +118,19 @@ class MediaController extends AvlController
                     $media->url = $path;
 
                     if ($media->save()) {
-                        if ($npa->type == 2) {
+                        if ($request->input('type') == 2) {
                             $npa->{'mainFile_' . ($media->lang ? $media->lang : 'ru')} = $media->id;
                             $npa->save();
                         }
 
                         return [
                             'success' => true,
-                            'file'    => $media->toArray()
+                            'file'    => $media->toArray(),
+                            'html' => view('adminnpa::npa.snippets.file', [
+                                'file' => Media::find($media->id)->toArray(),
+                                'type' => $request->input('type'),
+                                'npa' => $npa
+                            ])->render()
                         ];
                     }
 
@@ -157,8 +162,8 @@ class MediaController extends AvlController
                 $media->{'title_' . ($media->lang ? $media->lang : 'ru')} = $post['title'];
             }
 
-            if (isset($post['published_at'])) {
-                $media->published_at = $post['published_at'] . ' ' . $post['published_time_at'];
+            if (isset($post['published_at']) && isset($post['published_time'])) {
+                $media->published_at = $post['published_at'] . ' ' . $post['published_time'] ?? '00:00:00';
             }
 
             if (isset($post['fullTitle'])) {
