@@ -96,25 +96,25 @@ class NpaController extends AvlController
 
         $post = $request->input();
 
-        $this->validate(
-            request(),
-            [
-                'button'                 => 'required|in:add,save,edit',
-                'npa_rubric_id'          => 'sometimes',
-                'npa_short_ru'           => '',
-                'npa_full_ru'            => '',
-                'npa_title_ru'           => 'max:255',
-                'npa_type'               => '',
-                'npa_published_at'       => 'required|date_format:"Y-m-d"',
-                'npa_published_time'     => 'required|date_format:"H:i"',
-                'npa_updated_date'       => 'date_format:"Y-m-d"',
-                'npa_updated_time'       => 'date_format:"H:i"',
-                'npa_until_date'         => 'date_format:"Y-m-d"',
-                'npa_until_time'         => 'date_format:"H:i"',
-                'npa_commented_until_date' => 'date_format:"Y-m-d',
-                'npa_commented_until_time' => 'date_format:"H:i',
-                'npa_updated'            => ''
-            ]);
+        $this->validate(request(), [
+            'button'                 => 'required|in:add,save,edit',
+            'npa_rubric_id'          => 'sometimes',
+            'npa_short_ru'           => '',
+            'npa_full_ru'            => '',
+            'npa_title_ru'           => 'max:2000',
+            'npa_type'               => '',
+            'npa_published_at'       => 'required|date_format:"Y-m-d"',
+            'npa_published_time'     => 'required|date_format:"H:i"',
+            'npa_updated_date'       => 'date_format:"Y-m-d"',
+            'npa_updated_time'       => 'date_format:"H:i"',
+            'npa_until_date'         => 'date_format:"Y-m-d"',
+            'npa_until_time'         => 'date_format:"H:i"',
+            'npa_commented_until_date' => 'date_format:"Y-m-d',
+            'npa_commented_until_time' => 'date_format:"H:i',
+            'npa_updated'            => ''
+        ], [
+            'npa_title_ru.max' => 'Название не должно быть более :max символов'
+        ]);
 
         $record               = new Npa();
         $record->section_id   = $id;
@@ -233,21 +233,21 @@ class NpaController extends AvlController
 
         $post = $request->input();
 
-        $this->validate(
-            request(),
-            [
-                'button'             => 'required|in:add,save',
-                'npa_rubric_id'      => 'sometimes',
-                'npa_title_ru'       => 'max:255',
-                'npa_short_ru'       => '',
-                'npa_full_ru'        => '',
-                'npa_type'           => '',
-                'npa_published_at'   => 'required|date_format:"Y-m-d"',
-                'npa_published_time' => 'required|date_format:"H:i"',
-                'npa_updated_date'   => 'date_format:"Y-m-d"',
-                'npa_updated_time'   => 'date_format:"H:i"',
-                'npa_updated'        => ''
-            ]);
+        $this->validate(request(), [
+            'button'             => 'required|in:add,save',
+            'npa_rubric_id'      => 'sometimes',
+            'npa_title_ru'       => 'max:2000',
+            'npa_short_ru'       => '',
+            'npa_full_ru'        => '',
+            'npa_type'           => '',
+            'npa_published_at'   => 'required|date_format:"Y-m-d"',
+            'npa_published_time' => 'required|date_format:"H:i"',
+            'npa_updated_date'   => 'date_format:"Y-m-d"',
+            'npa_updated_time'   => 'date_format:"H:i"',
+            'npa_updated'        => ''
+        ], [
+            'npa_title_ru.max' => 'Название не должно быть более :max символов'
+        ]);
 
         $npa = Npa::findOrFail($npa_id);
 
