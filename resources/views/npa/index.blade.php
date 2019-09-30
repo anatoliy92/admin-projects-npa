@@ -76,7 +76,7 @@
 													<span>Вы действительно желаете удалить запись?</span>
 													<span class="remove--actions btn-group btn-group-sm">
 															<button class="btn btn-outline-primary cancel"><i class="fa fa-times-circle"></i> Нет</button>
-															<button class="btn btn-outline-danger remove--news" data-id="{{ $new->id }}" data-section="{{ $id }}"><i class="fa fa-trash"></i> Да</button>
+															<button class="btn btn-outline-danger remove--npa" data-id="{{ $new->id }}" data-section="{{ $id }}"><i class="fa fa-trash"></i> Да</button>
 													</span>
 											</div>
 										 @endcan
