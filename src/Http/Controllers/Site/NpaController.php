@@ -41,7 +41,7 @@ class NpaController extends SectionsController
                 $this->section->current_template->file_full);
 
         $data = $this->section->npa()->where('good_' . $this->lang, 1)
-            ->where('until_date', '>=', Carbon::now())->findOrFail($id);
+            ->whereNull('until_date')->orWhere('until_date', '>=', Carbon::now())->findOrFail($id);
 
         $data->timestamps = false;  // отключаем обновление даты
 
@@ -103,7 +103,7 @@ class NpaController extends SectionsController
           default: { $result = $result->where('type', 1); break; }
         }
 
-        $result = $result->where('until_date', '>=', Carbon::now());
+        $result = $result->whereNull('until_date')->orWhere('until_date', '>=', Carbon::now());
 
         $result = $result->where('published_at', '<=', Carbon::now());
 

@@ -3,7 +3,7 @@
 @section('main')
 	<div class="card">
 		<div class="card-header">
-			<i class="fa fa-align-justify"></i> Страница : {{$new->title_ru}}
+			<i class="fa fa-align-justify"></i> Страница : {{$npa->title_ru}}
 			<div class="card-actions">
 				<a href="{{ route('adminnews::sections.news.index', [ 'id' => $id, 'page' => session('page', '1') ]) }}" class="btn btn-primary pl-3 pr-3" title="Назад"><i class="fa fa-arrow-left"></i></a>
 			</div>
@@ -11,7 +11,7 @@
 		<div class="card-body">
 			<div class="form-group">
 				<label>Дата публикации</label>
-				<span class="form-control">{{ $new->published_at }}</span>
+				<span class="form-control">{{ $npa->published_at }}</span>
 			</div>
 
 			<ul class="nav nav-tabs" role="tablist">
@@ -24,10 +24,10 @@
 			<div class="tab-content">
 				@foreach ($langs as $lang)
 					<div class="tab-pane @if($lang->key == "ru") active show @endif"  id="title_{{$lang->key}}" role="tabpanel">
-						@if ($new->{'title_' . $lang->key} == "")
+						@if ($npa->{'title_' . $lang->key} == "")
 							<span class="form-control">Нет заголовка на данном языке</span>
 						@else
-							<span class="form-control">{{ $new->{'title_' . $lang->key} }}</span>
+							<span class="form-control">{{ $npa->{'title_' . $lang->key} }}</span>
 						@endif
 					</div>
 				@endforeach
@@ -51,10 +51,10 @@
 					<div class="tab-content">
 						@foreach ($langs as $lang)
 							<div class="tab-pane @if($lang->key == "ru") active show @endif"  id="full_{{ $lang->key }}" role="tabpanel">
-								@if ($new->{'full_' . $lang->key} == "")
+								@if ($npa->{'full_' . $lang->key} == "")
 									<span class="form-control">Нет полной новости на данном языке</span>
 								@else
-									<span class="form-control">{{$new->{'full_' . $lang->key} }}</span>
+									<span class="form-control">{{$npa->{'full_' . $lang->key} }}</span>
 								@endif
 							</div>
 						@endforeach
@@ -72,10 +72,10 @@
 						<div class="tab-content">
 							@foreach ($langs as $lang)
 								<div class="tab-pane @if($lang->key == "ru") active show @endif"  id="short_{{$lang->key}}" role="tabpanel">
-									@if ($new->{'short_' . $lang->key} == "")
+									@if ($npa->{'short_' . $lang->key} == "")
 										<span class="form-control">Нет короткой новости на данном языке</span>
 									@else
-										<span class="form-control">{{ $new->{'short_' . $lang->key} }}</span>
+										<span class="form-control">{{ $npa->{'short_' . $lang->key} }}</span>
 									@endif
 								</div>
 							@endforeach
