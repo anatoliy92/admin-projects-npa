@@ -70,10 +70,13 @@ $(document).ready(function() {
 		'onUploadComplete' : function( file, data ) {
 			var $data = JSON.parse(data);
 			if ($data.success) {
+				$(".change-main-file." + $("#select--language-file").val()).find('.fa').removeClass('fa-star').addClass('fa-star-o');
+
 				$('#sortable-files').prepend($data.html);
 
 				$('.datepicker').datepicker(globalDatePickerConfig);
 				$('.timepicker').timepicker(globalTimePickerConfig);
+
 			}
 
 			if ($data.errors) {

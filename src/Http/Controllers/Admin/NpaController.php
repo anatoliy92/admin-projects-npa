@@ -383,7 +383,7 @@ class NpaController extends AvlController
             }
 
             if ($record->delete()) {
-                return ['success' => ['Новость удалена']];
+                return ['success' => ['Запись удалена']];
             }
         }
 

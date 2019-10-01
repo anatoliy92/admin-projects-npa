@@ -68,16 +68,15 @@
 										<div class="btn-group" role="group">
 											@can('view', $section) <a href="{{ route('adminnpa::sections.npa.show', ['id' => $id, 'npa_id' => $new->id]) }}" class="btn btn btn-outline-primary" title="Просмотр"><i class="fa fa-eye"></i></a> @endcan
 											@can('update', $section) <a href="{{ route('adminnpa::sections.npa.edit', ['id' => $id, 'npa_id' => $new->id]) }}" class="btn btn btn-outline-success" title="Изменить"><i class="fa fa-edit"></i></a> @endcan
-											@can('update', $section) <a href="{{ route('adminnpa::sections.npa.move', ['id' => $id, 'npa' => $new->id]) }}" class="btn btn btn-outline-secondary" title="Изменить"><i class="fa fa-arrows"></i></a> @endcan
 											@can('delete', $section) <a href="#" class="btn btn btn-outline-danger remove--record" title="Удалить"><i class="fa fa-trash"></i></a> @endcan
 										</div>
 										@can('delete', $section)
 											<div class="remove-message">
-													<span>Вы действительно желаете удалить запись?</span>
-													<span class="remove--actions btn-group btn-group-sm">
-															<button class="btn btn-outline-primary cancel"><i class="fa fa-times-circle"></i> Нет</button>
-															<button class="btn btn-outline-danger remove--npa" data-id="{{ $new->id }}" data-section="{{ $id }}"><i class="fa fa-trash"></i> Да</button>
-													</span>
+												<span>Вы действительно желаете удалить запись?</span>
+												<span class="remove--actions btn-group btn-group-sm">
+													<button class="btn btn-outline-primary cancel"><i class="fa fa-times-circle"></i> Нет</button>
+													<button class="btn btn-outline-danger remove--npa" data-id="{{ $new->id }}" data-section="{{ $id }}"><i class="fa fa-trash"></i> Да</button>
+												</span>
 											</div>
 										 @endcan
 									</td>

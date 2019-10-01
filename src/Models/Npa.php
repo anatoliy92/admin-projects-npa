@@ -43,15 +43,15 @@ class Npa extends Model
         return Media::whereModel('Avl\AdminNpa\Models\Npa')->where('model_id', $this->id)->where('type', 'file');
     }
 
-		public function mainFile ()
-		{
-			return $this->files()->whereId($this->{'mainFile_' . $this->lang})->first();
-		}
+    public function mainFile ()
+    {
+        return $this->files()->whereId($this->{'mainFile_' . $this->lang})->whereLang($this->lang)->first();
+    }
 
-		public function npaFiles ()
-		{
-				return $this->files()->where('id', '!=', $this->{'mainFile_' . $this->lang})->orderBy('sind', 'DESC')->get();
-		}
+    public function npaFiles ()
+    {
+        return $this->files()->where('id', '!=', $this->{'mainFile_' . $this->lang})->whereLang($this->lang)->orderBy('sind', 'DESC')->get();
+    }
 
     public function getUpdatedAtAttribute($value)
     {

@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="btn border"><a href="#" class="change-main-file" data-model="App\Models\Media" data-lang="{{ $file['lang'] }}" data-id="{{ $file['id'] }}"><i class="fa @if($file['id'] == $npa->{'mainFile_' . $file['lang'] ?? 'ru'}){{ 'fa-star' }}@else{{ 'fa-star-o' }}@endif"></i></a></span>
+                            <span class="btn border"><a href="#" class="change-main-file {{ $file['lang'] }}" data-model="App\Models\Media" data-lang="{{ $file['lang'] }}" data-id="{{ $file['id'] }}"><i class="fa @if($file['id'] == $npa->{'mainFile_' . $file['lang'] ?? 'ru'}){{ 'fa-star' }}@else{{ 'fa-star-o' }}@endif"></i></a></span>
                             <span class="btn border"><a href="/file/download/{{ $file['id'] }}" target="_blank"><i class="fa fa-download"></i></a></span>
                             <span class="btn border"><a href="#" class="deleteMedia" data-id="{{ $file['id'] }}"><i class="fa fa-trash-o"></i></a></span>
                         </div>
