@@ -20,13 +20,10 @@ class NpaController extends SectionsController
 
             $records = $records->orderBy('published_at', 'DESC')->paginate($this->section->current_template->records);
 
-            $rubrics = $this->section->rubrics()->where('good_' . $this->lang, 1)->orderBy('title_' . $this->lang, 'ASC')->get();
-
             $template = (View::exists($template)) ? $template : 'site.templates.npa.short.default';
 
             return view ($template, [
                 'records'    => $records,
-                'rubrics'    => toSelectTransform($rubrics->toArray()),
                 'pagination' => $records->appends($_GET)->links(),
                 'request'    => $request
             ]);
@@ -40,8 +37,7 @@ class NpaController extends SectionsController
         $template = 'site.templates.npa.full.' . $this->getTemplateFileName(
                 $this->section->current_template->file_full);
 
-        $data = $this->section->npa()->where('good_' . $this->lang, 1)
-            ->whereNull('until_date')->orWhere('until_date', '>=', Carbon::now())->findOrFail($id);
+        $data = $this->section->npa()->where('good_' . $this->lang, 1)->whereNull('until_date')->orWhere('until_date', '<=', Carbon::now())->findOrFail($id);
 
         $data->timestamps = false;  // отключаем обновление даты
 
@@ -92,20 +88,16 @@ class NpaController extends SectionsController
     public function getQuery($result, $request)
     {
 
+        switch ($request->type) {
+          case "project": { $result = $result->where('type', 1); break; }
+          default: { $result = $result->where('type', 2); break; }
+        }
+
         $result = $result->where('good_' . $this->lang, 1);
 
-        if ($request->input('date')) {
-            $result = $result->whereDate('published_at', $request->input('date'));
-        }
+        $result = $result->whereNull('until_date')->orWhere('until_date', '<=', Carbon::now());
 
-        switch ($request->type) {
-          case "approve": { $result = $result->where('type', 2); break; }
-          default: { $result = $result->where('type', 1); break; }
-        }
-
-        $result = $result->whereNull('until_date')->orWhere('until_date', '>=', Carbon::now());
-
-        $result = $result->where('published_at', '<=', Carbon::now());
+        $result = $result->where('published_at', '>=', Carbon::now());
 
         return $result;
     }

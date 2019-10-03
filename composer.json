@@ -2,7 +2,7 @@
 	"name": "avl/admin-projects-npa",
 	"description": "NPA module for CMS IRsite",
 	"license": "MIT",
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"authors": [
 		{
 			"name": "Maxim Popov",
